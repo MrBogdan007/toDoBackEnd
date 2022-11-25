@@ -18,7 +18,7 @@ import todoRoute from './routes/todos';
 // **** Init express **** //
 
 const app = express();
-const pool = import("./databasePostgreSQL/db")
+
 
 // **** Set basic express settings **** //
 
@@ -40,8 +40,8 @@ if (EnvVars.nodeEnv === NodeEnvs.Production) {
 
 // Add APIs
 app.use("", homeRoute)
-app.use("/api/v1/", usersRoute)
-app.use("/api/v1/todos",todoRoute)
+app.use("/api/v1", usersRoute)
+app.use("/api/v1/todos/",todoRoute)
 // Setup error handler
 app.use((
   err: Error,
