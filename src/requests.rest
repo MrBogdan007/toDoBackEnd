@@ -1,0 +1,12 @@
+GET http://localhost:8081/api/v1/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikt5bGVAIiwicGFzc3dvcmQiOiIkMmIkMTAkV01LaFRnOVB2YXRtY0dvckhKTWkzZXN5eVl0L3gucld0eU1iS3dFTThwSGtpVjNLd3ZyaUMiLCJpYXQiOjE2Njk0MTM4Nzl9.PGsaWWfTN7WcdLcCSGkAvNGkXfaKQkSUDQrt1KfPX6E
+
+###
+
+POST http://localhost:8081/api/v1/signin
+Content-Type: application/json
+
+{
+   "email": "Kyle@",
+   "password": "some"
+}
