@@ -38,16 +38,16 @@ usersRoute.post("/signup", async (req, res) => {
 usersRoute.post("/signin", async (req, res) => {
   const { email, password } = req.body;
   try {
-    const users = await pool.query(
+    const user = await pool.query(
       "SELECT id,password FROM users WHERE email = $1",
       [email]
     );
-    if (users === null) {
+    if (user === null) {
       return res.status(400).send("Cannot find user");
     }
-    if (await bcrypt.compare(password, users.rows[0].password)) {
+    if (await bcrypt.compare(password, user.rows[0].password)) {
       const accessToken = jwt.sign(
-        users.rows[0].id,
+        user.rows[0].id,
         process.env.ACCESS_TOKEN_SECRET as string
       );
       res.status(200).json({ accessToken: accessToken });
@@ -62,7 +62,7 @@ usersRoute.post("/signin", async (req, res) => {
 usersRoute.put("/changePassword", authenticateToken, async (req, res) => {
   try {
     const { password } = req.body;
-    const userId = req.users;
+    const userId = req.user;
     const hashedPassword = await bcrypt.hash(password, 10);
     const updatedPassword = await pool.query(
       "UPDATE users SET password = $1 WHERE id = $2",
@@ -87,9 +87,9 @@ export function authenticateToken(req: any, res: any, next: any) {
   jwt.verify(
     token,
     process.env.ACCESS_TOKEN_SECRET as string,
-    (err: any, users: any) => {
+    (err: any, user: any) => {
       if (err) return res.sendStatus(403);
-      req.users = users;
+      req.user = user;
       next();
     }
   );

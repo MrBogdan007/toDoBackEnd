@@ -9,7 +9,7 @@ const todoRoute = Router();
 todoRoute.get("", authenticateToken, async (req, res) => {
   try {
     const { status } = req.query;
-    const userId = req.users;
+    const userId = req.user;
     if (status) {
       const allTodos = await pool.query(
         "SELECT * FROM todo WHERE user_id = $1 AND status = $2",
@@ -32,14 +32,14 @@ todoRoute.get("", authenticateToken, async (req, res) => {
 todoRoute.post("", authenticateToken, async (req: Request, res: Response) => {
   try {
     const { description, status, name } = req.body;
-    const userId = req.users;
+    const userId = req.user;
     const newTodo = await pool.query(
       "INSERT INTO todo (description,status,user_id,name) VALUES ($1,$2,$3,$4) RETURNING *",
       [description, status, userId, name]
     );
-    res.json(newTodo.rows[0]);
+    res.status(200).json(newTodo.rows[0]);
   } catch (err) {
-    return res.status(200).status(404).send("Bad request");
+    return res.status(404).send("Bad request");
   }
 });
 //update a todo
@@ -47,7 +47,7 @@ todoRoute.put("/:id", authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
     const { description, status, name } = req.body;
-    const userId = req.users;
+    const userId = req.user;
     const updateToDo = await pool.query(
       "UPDATE todo SET description = $1, status = $2, name = $3 WHERE id = $4 AND user_id = $5",
       [description, status, name, id, userId]
@@ -65,7 +65,7 @@ todoRoute.put("/:id", authenticateToken, async (req, res) => {
 todoRoute.delete("/:id", authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
-    const userId = req.users;
+    const userId = req.user;
     const deleteToDo = await pool.query(
       "DELETE FROM todo WHERE id = $1 AND user_id = $2",
       [id, userId]
