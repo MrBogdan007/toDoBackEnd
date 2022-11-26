@@ -4,7 +4,7 @@ CREATE DATABASE todo_database;
 -- \dt
 --\c into todo_database
 CREATE TABLE users (
-   user_id SERIAL PRIMARY KEY,
+   id SERIAL PRIMARY KEY,
    email VARCHAR(255),
    password VARCHAR(255),
    created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -14,15 +14,20 @@ CREATE TABLE users (
 CREATE TYPE enum AS ENUM ('NotStarted', 'OnGoing', 'Completed');
 
 CREATE TABLE todo(
-   todo_id SERIAL PRIMARY KEY,
+   id SERIAL PRIMARY KEY,
+   user_id INT NOT NULL,
    name VARCHAR(255),
    description VARCHAR(255),
    created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
    updated_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-   status     enum                             NOT NULL
+   status     enum                             NOT NULL,
+   CONSTRAINT fk_user
+      FOREIGN KEY(user_id) 
+	      REFERENCES users(id)
+   
 );
 
-INSERT INTO todo (status) VALUES('sad'),('ok'),('happy')
+INSERT INTO todo (status) VALUES('NotStarted'),('OnGoing'),('Completed')
 
 CREATE  FUNCTION update_updated_on_user_task()
 RETURNS TRIGGER AS $$

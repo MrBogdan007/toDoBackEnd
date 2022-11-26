@@ -10,3 +10,5 @@ Content-Type: application/json
    "email": "Kyle@",
    "password": "some"
 }
+
+POST http://localhost:8081/api/v1/signup
