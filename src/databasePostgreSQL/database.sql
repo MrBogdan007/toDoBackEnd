@@ -11,6 +11,14 @@ CREATE TABLE users (
    updated_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
+-- trigger for timestamp users
+CREATE TRIGGER update_user_task_updated_on
+BEFORE UPDATE
+ON
+users
+FOR EACH ROW
+EXECUTE PROCEDURE update_updated_on_user_task();
+
 CREATE TYPE enum AS ENUM ('NotStarted', 'OnGoing', 'Completed');
 
 CREATE TABLE todo(
@@ -24,7 +32,6 @@ CREATE TABLE todo(
    CONSTRAINT fk_user
       FOREIGN KEY(user_id) 
 	      REFERENCES users(id)
-   
 );
 
 INSERT INTO todo (status) VALUES('NotStarted'),('OnGoing'),('Completed')
@@ -37,9 +44,11 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
+-- trigger for timestamp todo
 CREATE TRIGGER update_user_task_updated_on
 BEFORE UPDATE
 ON
 todo
 FOR EACH ROW
 EXECUTE PROCEDURE update_updated_on_user_task();
+
