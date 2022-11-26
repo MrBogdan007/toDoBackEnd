@@ -34,7 +34,6 @@ CREATE TABLE todo(
 	      REFERENCES users(id)
 );
 
-INSERT INTO todo (status) VALUES('NotStarted'),('OnGoing'),('Completed')
 
 CREATE  FUNCTION update_updated_on_user_task()
 RETURNS TRIGGER AS $$

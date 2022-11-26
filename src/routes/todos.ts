@@ -1,7 +1,7 @@
 import { pool } from "@src/databasePostgreSQL/db";
 import { Router } from "express";
 import { authenticateToken } from "./users";
-import express, { Request, Response } from "express";
+import  { Request, Response } from "express";
 
 const todoRoute = Router();
 
@@ -35,7 +35,7 @@ todoRoute.post("", authenticateToken, async (req: Request, res: Response) => {
     const userId = req.users;
     const newTodo = await pool.query(
       "INSERT INTO todo (description,status,user_id,name) VALUES ($1,$2,$3,$4) RETURNING *",
-      [description, status, userId,name]
+      [description, status, userId, name]
     );
     res.json(newTodo.rows[0]);
   } catch (err) {
@@ -46,17 +46,17 @@ todoRoute.post("", authenticateToken, async (req: Request, res: Response) => {
 todoRoute.put("/:id", authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
-    const { description, status,name } = req.body;
+    const { description, status, name } = req.body;
     const userId = req.users;
     const updateToDo = await pool.query(
       "UPDATE todo SET description = $1, status = $2, name = $3 WHERE id = $4 AND user_id = $5",
-      [description, status,name, id, userId]
+      [description, status, name, id, userId]
     );
-    if(updateToDo.rowCount >= 1) {
+    if (updateToDo.rowCount >= 1) {
       res.status(200).json("Todo was updated!");
-    }else{
+    } else {
       return res.status(400).send("Bad request");
-    } 
+    }
   } catch (err) {
     return res.status(404).send("Not Found");
   }

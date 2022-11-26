@@ -1,9 +1,10 @@
-import { pool } from "@src/databasePostgreSQL/db";
 import { Router } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
+
+import { pool } from "@src/databasePostgreSQL/db";
 
 const usersRoute = Router();
 

@@ -1,13 +1,38 @@
 ## About
+-- psql -U postgres
+-- \dt
+--\c into todo_database
+1.Database
+In order to work with db you need to login as superuser and add all the code from database.sql to CMD;
+also you need to change db.ts pool config to you characteristics of db
+
+code contains 2 tables user and todos; 2 triggers for timestamps ; 1 function for timestamps; 1 type of enum; 
+
+2.!!!Important i attached file with postman request for quick testing; you can import it to fast checking all the routes.
+File name: 
+8081.postman_collection.json
+
+also you can check the routes at requests.rest
+
+All the available routes: 
+●	POST /api/v1/signup: Sign up as an user of the system, using email & password
+●	POST /api/v1/signin: Sign in using email & password. The system will return the JWT token that can be used to call the APIs that follow
+●	PUT /api/v1/changePassword: Change user’s password
+●	GET /api/v1/todos?status=status: Get a list of todo items. Optionally, a status query param can be included to return only items of specific status. If not present, return all items
+●	POST /api/v1/todos: Create a new todo item
+●	PUT /api/v1/todos/:id: Update a todo item
+●	DELETE /api/v1/todos/:id: Delete a todo item
+
+All the routes after the signin  route working with JWT token that will be generated after signin
+
+3. ### `npm run dev`
+
+Port by default : 8081
+http://localhost:8081/
+Run the server in development mode.
 
 This project was created with [express-generator-typescript](https://github.com/seanpmaxwell/express-generator-typescript).
-
-
 ## Available Scripts
-
-### `npm run dev`
-
-Run the server in development mode.
 
 ### `npm test`
 
